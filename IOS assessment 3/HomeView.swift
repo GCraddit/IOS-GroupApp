@@ -11,11 +11,27 @@ struct HomeView: View {
     @EnvironmentObject var eventVM: EventViewModel
 
     var body: some View {
-        NavigationView {
-            List(eventVM.allEvents) { event in
-                Text(event.title)
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(eventVM.allEvents) { event in
+                        NavigationLink {
+                            EventDetailView(event: event)
+                        } label: {
+                            EventCardView(event: event)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
+                .padding()
             }
             .navigationTitle("Local Explorer")
         }
     }
 }
+
+#Preview {
+    HomeView()
+        .environmentObject(EventViewModel())
+}
+
