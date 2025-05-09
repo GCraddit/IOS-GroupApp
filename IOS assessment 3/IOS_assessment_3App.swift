@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct IOS_assessment_3App: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+    @StateObject var eventVM = EventViewModel()
+
+        var body: some Scene {
+            WindowGroup {
+                HomeView()
+                    .environmentObject(eventVM)
+            }
     }
 }
