@@ -58,6 +58,7 @@ struct DashboardView: View {
 
                 Spacer()
                 Button("Sign Out") {
+                    print("Signing out: isLoggedIn set to false")
                             isLoggedIn = false
                         }
                         .frame(maxWidth: .infinity)

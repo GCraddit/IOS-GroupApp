@@ -38,6 +38,7 @@ struct SignInView: View {
 
                 // 登录按钮
                 Button("Sign In") {
+                    print("Logging in: isLoggedIn set to true")
                     if email.isEmpty || password.isEmpty {
                         showError = true
                     } else {
