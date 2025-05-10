@@ -9,6 +9,9 @@ import SwiftUI
 
 struct FavoritesView: View {
     @EnvironmentObject var eventVM: EventViewModel
+    @EnvironmentObject var userSession: UserSession
+    @State private var showLoginSheet = false
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
@@ -41,10 +44,26 @@ struct FavoritesView: View {
             .background(Color(.systemBackground))
             .navigationTitle("Favorites")
         }
+        .onAppear {
+            if userSession.currentUser == nil {
+                showLoginSheet = true
+            }
+        }
+        .sheet(isPresented: $showLoginSheet, onDismiss: {
+            // 如果用户仍未登录，自动关闭页面
+            if userSession.currentUser == nil {
+                dismiss()
+            }
+        }) {
+            SignInView()
+                .environmentObject(userSession)
+                .interactiveDismissDisabled(false) // ✅ 允许下滑关闭
+        }
     }
 }
 
 #Preview {
     FavoritesView()
         .environmentObject(EventViewModel())
+        .environmentObject(UserSession())
 }

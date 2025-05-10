@@ -11,6 +11,7 @@ struct User: Identifiable {
     var id = UUID()
     var name: String
     var email: String
+    var password: String
     var avatarImage: String
     var createdEvents: [Event]
     var favoriteEvents: [Event]

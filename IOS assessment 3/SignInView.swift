@@ -9,9 +9,12 @@ import SwiftUI
 
 struct SignInView: View {
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @EnvironmentObject var userSession: UserSession
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showError = false
+    @Environment(\.dismiss) var dismiss
+
 
     var body: some View {
         NavigationStack {
@@ -41,8 +44,11 @@ struct SignInView: View {
                 Button("Sign In") {
                     if email.isEmpty || password.isEmpty {
                         showError = true
-                    } else {
+                    } else if userSession.login(email: email, password: password) {
                         isLoggedIn = true
+                        dismiss()
+                    } else {
+                        showError = true
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -59,6 +65,7 @@ struct SignInView: View {
         }
     }
 }
+
 
 #Preview {
     SignInView()

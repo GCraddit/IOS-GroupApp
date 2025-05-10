@@ -39,5 +39,6 @@ struct MainTabView: View {
 #Preview {
     MainTabView()
         .environmentObject(EventViewModel())
+        .environmentObject(UserSession())
 }
 

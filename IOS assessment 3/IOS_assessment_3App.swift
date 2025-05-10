@@ -10,18 +10,15 @@ import SwiftUI
 @main
 struct IOS_assessment_3App: App {
     @StateObject var eventVM = EventViewModel()
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = true // 默认已登录
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false// 默认没有登录
+    @StateObject var userSession = UserSession()
     
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
-                MainTabView()
-                    .environmentObject(eventVM)
-                    .transition(.opacity) // ⬅️ 可选：更平滑
-            } else {
-                SignInView()
-                    .transition(.opacity)
-            }
+            MainTabView()
+                .transition(.opacity)
+                .environmentObject(userSession)
+                .environmentObject(eventVM)
         }
     }
 }

@@ -9,8 +9,11 @@ import SwiftUI
 
 struct DashboardView: View {
     @EnvironmentObject var eventVM: EventViewModel
+    @EnvironmentObject var userSession: UserSession
+    @Environment(\.dismiss) var dismiss
     @State private var selectedTab = "My Events"
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = true
+    @State private var showLoginSheet = false
 
     let tabs = ["My Events", "Favorites", "Following"]
 
@@ -88,22 +91,42 @@ struct DashboardView: View {
             }
 
         }
+        .onAppear {
+            if userSession.currentUser == nil {
+                showLoginSheet = true
+            }
+        }
+        .sheet(isPresented: $showLoginSheet, onDismiss: {
+            // 如果用户仍未登录，自动关闭页面
+            if userSession.currentUser == nil {
+                dismiss()
+            }
+        }) {
+            SignInView()
+                .environmentObject(userSession)
+                .interactiveDismissDisabled(false) // ✅ 允许下滑关闭
+        }
     }
+    
 
     // 数据过滤逻辑
     func filteredEvents() -> [Event] {
+        let userName = userSession.currentUser?.name ?? ""
+
         switch selectedTab {
         case "Favorites":
-            return Array(eventVM.allEvents.prefix(1))
+            return userSession.currentUser?.favoriteEvents ?? []
         case "Following":
-            return Array(eventVM.allEvents.dropFirst(1))
+            return [] // 如果你未来有“关注其他用户”的逻辑可以填这里
         default:
-            return eventVM.allEvents
+            return eventVM.allEvents.filter { $0.organizer == userName }
         }
     }
+
 }
 
 #Preview {
     DashboardView()
         .environmentObject(EventViewModel())
+        .environmentObject(UserSession())
 }

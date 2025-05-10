@@ -11,6 +11,8 @@ import MapKit
 struct EventDetailView: View {
     let event: Event
     @EnvironmentObject var eventVM: EventViewModel
+    @EnvironmentObject var userSession: UserSession
+    @State private var showLoginSheet = false
 
     var body: some View {
         ScrollView {
@@ -27,12 +29,29 @@ struct EventDetailView: View {
                 HStack {
                     Spacer()
                     Button {
+                        if userSession.currentUser == nil {
+                            showLoginSheet = true
+                            return
+                        }
+
                         eventVM.toggleFavorite(event)
+
+                        if let userIndex = userSession.allUsers.firstIndex(where: { $0.id == userSession.currentUser?.id }) {
+                            if let favIndex = userSession.allUsers[userIndex].favoriteEvents.firstIndex(where: { $0.id == event.id }) {
+                                userSession.allUsers[userIndex].favoriteEvents.remove(at: favIndex)
+                            } else {
+                                userSession.allUsers[userIndex].favoriteEvents.append(event)
+                            }
+
+                            userSession.currentUser = userSession.allUsers[userIndex]
+                        }
                     } label: {
                         Image(systemName: eventVM.isFavorite(event) ? "heart.fill" : "heart")
                             .foregroundColor(eventVM.isFavorite(event) ? .red : .gray)
                             .font(.title2)
                     }
+
+
                 }
                 .padding(.trailing)
 
@@ -55,7 +74,11 @@ struct EventDetailView: View {
 
                 // 按钮
                 Button("Select") {
-                    // 报名逻辑待实现
+                    if userSession.currentUser == nil {
+                        showLoginSheet = true
+                    } else {
+                        // 将来你可以写 registerToEvent()
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -65,6 +88,10 @@ struct EventDetailView: View {
         }
         .navigationTitle("Event Detail Page")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showLoginSheet) {
+            SignInView()
+                .environmentObject(userSession)
+        }
     }
 
     // MARK: - 复用小组件

@@ -10,6 +10,9 @@ import CoreLocation
 
 struct ReleaseEventView: View {
     @EnvironmentObject var eventVM: EventViewModel
+    @EnvironmentObject var userSession: UserSession
+    @State private var showLoginSheet = false
+    @Environment(\.dismiss) var dismiss
     @State private var selectedCoordinate = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
 
     @State private var title = ""
@@ -83,7 +86,7 @@ struct ReleaseEventView: View {
                 Button("Post") {
                     eventVM.addEvent(
                         title: title,
-                        organizer: "You",
+                        organizer: userSession.currentUser?.name ?? "Unknown",
                         address: address,
                         summary: summary,
                         imageName: imageName,
@@ -99,10 +102,26 @@ struct ReleaseEventView: View {
             }
             .navigationTitle("New Event")
         }
+        .onAppear {
+            if userSession.currentUser == nil {
+                showLoginSheet = true
+            }
+        }
+        .sheet(isPresented: $showLoginSheet, onDismiss: {
+            // 如果用户仍未登录，自动关闭页面
+            if userSession.currentUser == nil {
+                dismiss()
+            }
+        }) {
+            SignInView()
+                .environmentObject(userSession)
+                .interactiveDismissDisabled(false) // ✅ 允许下滑关闭
+        }
     }
 }
 
 #Preview {
     ReleaseEventView()
         .environmentObject(EventViewModel())
+        .environmentObject(UserSession())
 }
