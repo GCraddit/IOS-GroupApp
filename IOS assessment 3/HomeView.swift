@@ -23,12 +23,15 @@ struct HomeView: View {
                         .buttonStyle(PlainButtonStyle())
                     }
                 }
-                .padding()
+                .padding(.horizontal, AppStyle.cardPadding)
             }
+            .scrollIndicators(.hidden)
+            .background(Color(.systemBackground))
             .navigationTitle("Local Explorer")
         }
     }
 }
+
 
 #Preview {
     HomeView()

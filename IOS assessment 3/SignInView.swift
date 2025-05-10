@@ -19,6 +19,7 @@ struct SignInView: View {
                 Text("Welcome Back")
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .padding(.bottom, 8)
 
                 // 邮箱输入
                 TextField("Email", text: $email)
@@ -27,18 +28,17 @@ struct SignInView: View {
                     .autocapitalization(.none)
                     .padding()
                     .background(Color(.secondarySystemBackground))
-                    .cornerRadius(8)
+                    .cornerRadius(AppStyle.cardCornerRadius)
 
                 // 密码输入
                 SecureField("Password", text: $password)
                     .textContentType(.password)
                     .padding()
                     .background(Color(.secondarySystemBackground))
-                    .cornerRadius(8)
+                    .cornerRadius(AppStyle.cardCornerRadius)
 
                 // 登录按钮
                 Button("Sign In") {
-                    print("Logging in: isLoggedIn set to true")
                     if email.isEmpty || password.isEmpty {
                         showError = true
                     } else {
@@ -59,6 +59,7 @@ struct SignInView: View {
         }
     }
 }
+
 #Preview {
     SignInView()
 }

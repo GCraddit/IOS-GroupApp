@@ -18,28 +18,32 @@ struct FavoritesView: View {
                         Image(systemName: "star")
                             .resizable()
                             .frame(width: 60, height: 60)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.gray.opacity(0.6))
+
                         Text("No favorites yet.")
                             .font(.headline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppStyle.secondaryText)
                     }
-                    .padding(.top, 80)
+                    .padding(.top, 100)
                 } else {
                     VStack(spacing: 16) {
                         ForEach(eventVM.favoriteEvents) { event in
                             NavigationLink(destination: EventDetailView(event: event)) {
                                 EventCardView(event: event)
                             }
-                            .buttonStyle(PlainButtonStyle())
+                            .buttonStyle(.plain)
                         }
                     }
-                    .padding()
+                    .padding(.horizontal, AppStyle.cardPadding)
                 }
             }
+            .scrollIndicators(.hidden)
+            .background(Color(.systemBackground))
             .navigationTitle("Favorites")
         }
     }
 }
+
 #Preview {
     FavoritesView()
         .environmentObject(EventViewModel())

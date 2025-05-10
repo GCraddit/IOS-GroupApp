@@ -15,31 +15,38 @@ struct EditProfileView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Profile Picture")) {
+                Section(header: Text("Profile Picture").font(.caption).foregroundColor(AppStyle.secondaryText)) {
                     HStack {
                         Spacer()
                         Image(systemName: "person.crop.circle.fill")
                             .resizable()
                             .frame(width: 100, height: 100)
-                            .foregroundColor(.blue)
+                            .foregroundColor(AppStyle.primaryColor)
                             .padding()
                         Spacer()
                     }
                 }
 
-                Section(header: Text("Name")) {
+                Section(header: Text("Name").font(.caption).foregroundColor(AppStyle.secondaryText)) {
                     TextField("Your name", text: $name)
+                        .padding(8)
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(AppStyle.cardCornerRadius)
                 }
 
-                Section(header: Text("Bio")) {
+                Section(header: Text("Bio").font(.caption).foregroundColor(AppStyle.secondaryText)) {
                     TextEditor(text: $bio)
                         .frame(height: 100)
+                        .padding(8)
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(AppStyle.cardCornerRadius)
                 }
 
                 Button("Save Changes") {
                     showSavedAlert = true
                 }
                 .frame(maxWidth: .infinity)
+                .padding(.vertical)
                 .buttonStyle(.borderedProminent)
                 .alert("Profile Updated!", isPresented: $showSavedAlert) {
                     Button("OK", role: .cancel) { }
@@ -49,6 +56,7 @@ struct EditProfileView: View {
         }
     }
 }
+
 #Preview {
     EditProfileView()
 }

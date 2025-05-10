@@ -20,8 +20,9 @@ struct EventDetailView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 220)
-                    .cornerRadius(12)
+                    .cornerRadius(AppStyle.cardCornerRadius)
                     .clipped()
+
                 // 收藏按钮
                 HStack {
                     Spacer()
@@ -37,52 +38,24 @@ struct EventDetailView: View {
 
                 // 信息项
                 VStack(spacing: 12) {
-                    HStack {
-                        Text("EVENT NAME")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Text(event.title)
-                    }
-
-                    HStack {
-                        Text("Organizer")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Text(event.organizer)
-                            .foregroundColor(.blue)
-                    }
-
-                    HStack {
-                        Text("ADDRESS")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Text(event.address)
-                    }
-
+                    infoRow(label: "EVENT NAME", value: event.title)
+                    infoRow(label: "Organizer", value: event.organizer, color: .blue)
+                    infoRow(label: "ADDRESS", value: event.address)
+                    
                     VStack(alignment: .leading, spacing: 4) {
                         Text("SUMMARY")
                             .font(.caption)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppStyle.secondaryText)
                         Text(event.summary)
                     }
 
-                    HStack {
-                        Text("Number of participants (registered)")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Text("\(event.interestedCount)")
-                    }
+                    infoRow(label: "Number of participants (registered)", value: "\(event.interestedCount)")
                 }
                 .padding(.horizontal)
-                
 
                 // 按钮
                 Button("Select") {
-                    // 可添加报名逻辑
+                    // 报名逻辑待实现
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -93,7 +66,20 @@ struct EventDetailView: View {
         .navigationTitle("Event Detail Page")
         .navigationBarTitleDisplayMode(.inline)
     }
+
+    // MARK: - 复用小组件
+    func infoRow(label: String, value: String, color: Color = .primary) -> some View {
+        HStack {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(AppStyle.secondaryText)
+            Spacer()
+            Text(value)
+                .foregroundColor(color)
+        }
+    }
 }
+
 #Preview {
     NavigationStack {
         EventDetailView(event: Event(

@@ -17,10 +17,10 @@ struct EventCardView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 180)
-                .cornerRadius(12)
+                .cornerRadius(AppStyle.cardCornerRadius)
                 .clipped()
 
-            // 活动标题
+            // 标题
             Text(event.title)
                 .font(.headline)
 
@@ -31,15 +31,14 @@ struct EventCardView: View {
                 Label(event.address, systemImage: "mappin.and.ellipse")
             }
             .font(.subheadline)
-            .foregroundColor(.secondary)
+            .foregroundColor(AppStyle.secondaryText)
 
-            // 类型 + 参与人数
+            // 标签 & 人数
             HStack {
                 Text(event.category)
                     .font(.caption)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.blue.opacity(0.1))
+                    .padding(6)
+                    .background(AppStyle.primaryColor.opacity(0.1))
                     .cornerRadius(8)
 
                 Spacer()
@@ -51,10 +50,11 @@ struct EventCardView: View {
         }
         .padding()
         .background(Color(.systemBackground))
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .cornerRadius(AppStyle.cardCornerRadius)
+        .shadow(color: AppStyle.cardShadow, radius: AppStyle.cardShadowRadius, x: 0, y: 2)
     }
 }
+
 
 #Preview(traits: .sizeThatFitsLayout) {
     EventCardView(event: Event(

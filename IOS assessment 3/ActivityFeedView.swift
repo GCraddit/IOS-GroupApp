@@ -25,17 +25,21 @@ struct ActivityFeedView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("\(note.sender) \(note.message)")
                             .font(.subheadline)
+
                         Text(note.date.formatted(date: .abbreviated, time: .shortened))
-                            .font(.caption)
-                            .foregroundColor(.gray)
+                            .font(AppStyle.captionFont)
+                            .foregroundColor(AppStyle.secondaryText)
                     }
                 }
                 .padding(.vertical, 6)
             }
+            .scrollContentBackground(.hidden)
+            .background(Color(.systemBackground))
             .navigationTitle("Activity Feed")
         }
     }
 }
+
 #Preview {
     ActivityFeedView()
 }
