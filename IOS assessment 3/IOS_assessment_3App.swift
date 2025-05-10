@@ -12,10 +12,13 @@ struct IOS_assessment_3App: App {
     @StateObject var eventVM = EventViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false// 默认没有登录
     @StateObject var userSession = UserSession()
+    @State private var selectedTab = 0
+
+    
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            MainTabView(selectedTab: $selectedTab)
                 .transition(.opacity)
                 .environmentObject(userSession)
                 .environmentObject(eventVM)

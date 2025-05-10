@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct EditProfileView: View {
-    @State private var name: String = "Helena"
-    @State private var bio: String = "City Explorer and foodie!"
+
     @State private var showSavedAlert = false
+    @EnvironmentObject var userSession: UserSession
+    @State private var name: String = ""
+    @State private var email: String = ""
+    @State private var avatar: String = "profile1"
 
     var body: some View {
         NavigationStack {
@@ -18,11 +22,10 @@ struct EditProfileView: View {
                 Section(header: Text("Profile Picture").font(.caption).foregroundColor(AppStyle.secondaryText)) {
                     HStack {
                         Spacer()
-                        Image(systemName: "person.crop.circle.fill")
+                        Image(avatar)
                             .resizable()
                             .frame(width: 100, height: 100)
-                            .foregroundColor(AppStyle.primaryColor)
-                            .padding()
+                            .clipShape(Circle())
                         Spacer()
                     }
                 }
@@ -34,15 +37,30 @@ struct EditProfileView: View {
                         .cornerRadius(AppStyle.cardCornerRadius)
                 }
 
-                Section(header: Text("Bio").font(.caption).foregroundColor(AppStyle.secondaryText)) {
-                    TextEditor(text: $bio)
-                        .frame(height: 100)
+                Section(header: Text("Email").font(.caption).foregroundColor(AppStyle.secondaryText)) {
+                    Text(email)
                         .padding(8)
-                        .background(Color(.secondarySystemBackground))
+                        .background(Color(.tertiarySystemBackground))
                         .cornerRadius(AppStyle.cardCornerRadius)
                 }
 
+                Section(header: Text("Select Avatar")) {
+                    Picker("Avatar", selection: $avatar) {
+                        ForEach(ImageAssets.avatars, id: \.self) { name in
+                            Text(name.capitalized).tag(name)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                }
+
                 Button("Save Changes") {
+                    guard let id = userSession.currentUser?.id,
+                          let index = userSession.allUsers.firstIndex(where: { $0.id == id }) else {
+                        return
+                    }
+                    userSession.allUsers[index].name = name
+                    userSession.allUsers[index].avatarImage = avatar
+                    userSession.currentUser = userSession.allUsers[index]
                     showSavedAlert = true
                 }
                 .frame(maxWidth: .infinity)
@@ -52,11 +70,37 @@ struct EditProfileView: View {
                     Button("OK", role: .cancel) { }
                 }
             }
+            .onAppear {
+                if let user = userSession.currentUser {
+                    name = user.name
+                    email = user.email
+                    avatar = user.avatarImage
+                }
+            }
+
             .navigationTitle("Edit Profile")
         }
     }
 }
 
 #Preview {
-    EditProfileView()
+    let userSession = UserSession()
+    userSession.currentUser = User(
+        name: "PreviewUser",
+        email: "preview@example.com",
+        password: "123",
+        avatarImage: "profile1",
+        isMerchant: false,
+        preferredLocation: CLLocationCoordinate2D(latitude: -33.0, longitude: 151.0),
+        createdEvents: [],
+        favoriteEvents: []
+    )
+
+    return NavigationStack {
+        EditProfileView()
+            .environmentObject(userSession)
+    }
 }
+
+
+

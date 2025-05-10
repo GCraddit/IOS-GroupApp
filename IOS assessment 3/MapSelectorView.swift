@@ -10,6 +10,7 @@ import MapKit
 
 struct MapSelectorView: UIViewRepresentable {
     @Binding var selectedCoordinate: CLLocationCoordinate2D
+    @Binding var region: MKCoordinateRegion
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -22,7 +23,7 @@ struct MapSelectorView: UIViewRepresentable {
     func updateUIView(_ uiView: MKMapView, context: Context) {
         // 移除旧的标注
         uiView.removeAnnotations(uiView.annotations)
-
+        
         // 添加新的标注
         let annotation = MKPointAnnotation()
         annotation.coordinate = selectedCoordinate
@@ -52,3 +53,5 @@ struct MapSelectorView: UIViewRepresentable {
         }
     }
 }
+
+

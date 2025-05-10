@@ -7,16 +7,30 @@
 
 import SwiftUI
 
+
+
 struct ActivityFeedView: View {
-    let notifications: [NotificationItem] = [
-        NotificationItem(type: .like, sender: "Alice", message: "liked your event BBQ Festival", date: Date()),
-        NotificationItem(type: .comment, sender: "Bob", message: "commented: Looks fun!", date: Date().addingTimeInterval(-3600)),
-        NotificationItem(type: .follow, sender: "Charlie", message: "started following you", date: Date().addingTimeInterval(-7200))
-    ]
+//    let notifications: [NotificationItem] = [
+//        NotificationItem(type: .like, sender: "Alice", message: "liked your event BBQ Festival", date: Date()),
+//        NotificationItem(type: .comment, sender: "Bob", message: "commented: Looks fun!", date: Date().addingTimeInterval(-3600)),
+//        NotificationItem(type: .follow, sender: "Charlie", message: "started following you", date: Date().addingTimeInterval(-7200))
+//    ]
+    @EnvironmentObject var userSession: UserSession
+    
+    var notifications: [NotificationItem] {
+        userSession.currentUser?.notifications ?? []
+    }
+
 
     var body: some View {
-        NavigationStack {
-            List(notifications) { note in
+        List(notifications) { note in
+            NavigationLink {
+                if let event = note.relatedEvent {
+                    EventDetailView(event: event)
+                } else {
+                    Text("No linked event.")
+                }
+            } label: {
                 HStack(spacing: 12) {
                     Image(systemName: note.type.iconName)
                         .foregroundColor(note.type.iconColor)
@@ -42,4 +56,5 @@ struct ActivityFeedView: View {
 
 #Preview {
     ActivityFeedView()
+        .environmentObject(UserSession())
 }

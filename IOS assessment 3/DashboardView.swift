@@ -11,9 +11,12 @@ struct DashboardView: View {
     @EnvironmentObject var eventVM: EventViewModel
     @EnvironmentObject var userSession: UserSession
     @Environment(\.dismiss) var dismiss
-    @State private var selectedTab = "My Events"
+    @Binding var selectedTab: Int
+    
+    @State private var tabFilter = "My Events"
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = true
     @State private var showLoginSheet = false
+    
 
     let tabs = ["My Events", "Favorites", "Following"]
 
@@ -22,10 +25,9 @@ struct DashboardView: View {
             VStack(alignment: .leading) {
                 // 用户头部
                 HStack(spacing: 16) {
-                    Image(systemName: "person.crop.circle.fill")
+                    Image(userSession.currentUser?.avatarImage ?? "defaultAvatar")
                         .resizable()
                         .frame(width: 60, height: 60)
-                        .foregroundColor(AppStyle.primaryColor)
 
                     VStack(alignment: .leading) {
                         Text("Helena")
@@ -50,7 +52,8 @@ struct DashboardView: View {
 
 
                 // Tab Picker
-                Picker("Select", selection: $selectedTab) {
+                Picker("Select", selection: $tabFilter
+) {
                     ForEach(tabs, id: \.self) { tab in
                         Text(tab)
                     }
@@ -62,7 +65,7 @@ struct DashboardView: View {
                 // 卡片列表
                 ScrollView {
                     VStack(spacing: 16) {
-                        ForEach(filteredEvents(), id: \.id) { event in
+                        ForEach(filteredEvents, id: \.id) { event in
                             EventCardView(event: event)
                         }
                     }
@@ -73,8 +76,10 @@ struct DashboardView: View {
 
                 // 退出按钮
                 Button("Sign Out") {
-                    print("Signing out: isLoggedIn set to false")
+                    print("Signing out...")
+                    userSession.currentUser = nil
                     isLoggedIn = false
+                    selectedTab = 0 // ✅ 强制跳回首页
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -97,36 +102,33 @@ struct DashboardView: View {
             }
         }
         .sheet(isPresented: $showLoginSheet, onDismiss: {
-            // 如果用户仍未登录，自动关闭页面
             if userSession.currentUser == nil {
-                dismiss()
+                selectedTab = 0 // ✅ 自动跳回首页 tab
             }
         }) {
             SignInView()
                 .environmentObject(userSession)
-                .interactiveDismissDisabled(false) // ✅ 允许下滑关闭
+                .interactiveDismissDisabled(false)
         }
     }
     
 
     // 数据过滤逻辑
-    func filteredEvents() -> [Event] {
-        let userName = userSession.currentUser?.name ?? ""
-
-        switch selectedTab {
+    var filteredEvents: [Event] {
+        switch tabFilter {
         case "Favorites":
-            return userSession.currentUser?.favoriteEvents ?? []
+            return eventVM.favoriteEvents
         case "Following":
-            return [] // 如果你未来有“关注其他用户”的逻辑可以填这里
+            return Array(eventVM.allEvents.dropFirst(1))
         default:
-            return eventVM.allEvents.filter { $0.organizer == userName }
+            return eventVM.allEvents
         }
     }
 
 }
 
 #Preview {
-    DashboardView()
+    DashboardView(selectedTab: .constant(0))
         .environmentObject(EventViewModel())
         .environmentObject(UserSession())
 }

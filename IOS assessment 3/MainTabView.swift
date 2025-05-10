@@ -7,37 +7,44 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @Binding var selectedTab: Int
+    
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             HomeView()
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
+                .tag(0)
 
             MapView()
                 .tabItem {
                     Label("Map", systemImage: "map")
                 }
+                .tag(1)
 
-            ReleaseEventView()
+            ReleaseEventView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Post", systemImage: "plus.circle")
                 }
+                .tag(2)
 
-            FavoritesView()
+            FavoritesView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Favorites", systemImage: "heart")
                 }
+                .tag(3)
 
-            DashboardView()
+            DashboardView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Me", systemImage: "person")
                 }
+                .tag(4)
         }
     }
 }
 #Preview {
-    MainTabView()
+    MainTabView(selectedTab: .constant(0))
         .environmentObject(EventViewModel())
         .environmentObject(UserSession())
 }

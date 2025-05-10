@@ -15,7 +15,11 @@ struct NotificationItem: Identifiable {
     let sender: String
     let message: String
     let date: Date
+
+    // ✅ 可选关联的 Event（用于跳转详情页）
+    let relatedEvent: Event?
 }
+
 
 enum NotificationType {
     case comment, like, follow

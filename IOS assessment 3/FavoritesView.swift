@@ -12,6 +12,7 @@ struct FavoritesView: View {
     @EnvironmentObject var userSession: UserSession
     @State private var showLoginSheet = false
     @Environment(\.dismiss) var dismiss
+    @Binding var selectedTab: Int
 
     var body: some View {
         NavigationStack {
@@ -50,20 +51,19 @@ struct FavoritesView: View {
             }
         }
         .sheet(isPresented: $showLoginSheet, onDismiss: {
-            // 如果用户仍未登录，自动关闭页面
             if userSession.currentUser == nil {
-                dismiss()
+                selectedTab = 0 // ✅ 自动跳回首页 tab
             }
         }) {
             SignInView()
                 .environmentObject(userSession)
-                .interactiveDismissDisabled(false) // ✅ 允许下滑关闭
+                .interactiveDismissDisabled(false)
         }
     }
 }
 
 #Preview {
-    FavoritesView()
+    FavoritesView(selectedTab: .constant(0))
         .environmentObject(EventViewModel())
         .environmentObject(UserSession())
 }

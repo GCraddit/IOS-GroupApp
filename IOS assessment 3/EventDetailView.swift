@@ -13,6 +13,8 @@ struct EventDetailView: View {
     @EnvironmentObject var eventVM: EventViewModel
     @EnvironmentObject var userSession: UserSession
     @State private var showLoginSheet = false
+    @State private var hasRegistered = false
+
 
     var body: some View {
         ScrollView {
@@ -73,16 +75,21 @@ struct EventDetailView: View {
                 .padding(.horizontal)
 
                 // 按钮
-                Button("Select") {
+                Button {
                     if userSession.currentUser == nil {
                         showLoginSheet = true
-                    } else {
-                        // 将来你可以写 registerToEvent()
+                    } else if !hasRegistered && event.interestedCount < event.maxPeople {
+                        hasRegistered = true
+                        eventVM.incrementInterest(for: event)
                     }
+                } label: {
+                    Text(hasRegistered ? "Registered" : "Select")
                 }
+                .disabled(hasRegistered || event.interestedCount >= event.maxPeople)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .buttonStyle(.borderedProminent)
+                .foregroundColor(hasRegistered ? .gray : .white)
             }
             .padding()
         }
@@ -108,19 +115,39 @@ struct EventDetailView: View {
 }
 
 #Preview {
-    NavigationStack {
-        EventDetailView(event: Event(
-            title: "Mahjong",
-            organizer: "Helena",
-            address: "1, ABC, Sydney, 2000",
-            summary: "It is a mahjong game",
-            date: Date(),
-            imageName: "mahjong",
-            category: "Game",
-            maxPeople: 8,
-            interestedCount: 2,
-            location: CLLocationCoordinate2D(latitude: -33.0, longitude: 151.0)
-        ))
-        .environmentObject(EventViewModel())
+    let event = Event(
+        title: "Mahjong",
+        organizer: "Helena",
+        address: "1, ABC, Sydney, 2000",
+        summary: "It is a mahjong game",
+        date: Date(),
+        imageName: "mahjong",
+        category: "Game",
+        maxPeople: 8,
+        interestedCount: 2,
+        location: CLLocationCoordinate2D(latitude: -33.0, longitude: 151.0)
+    )
+
+    let viewModel = EventViewModel()
+    viewModel.allEvents.append(event)
+
+    let session = UserSession()
+    session.currentUser = User(
+        name: "PreviewUser",
+        email: "preview@example.com",
+        password: "123",
+        avatarImage: "profile1",
+        isMerchant: false,
+        preferredLocation: CLLocationCoordinate2D(latitude: -33.0, longitude: 151.0),
+        createdEvents: [],
+        favoriteEvents: [],
+        notifications: []
+    )
+
+    return NavigationStack {
+        EventDetailView(event: event)
+            .environmentObject(viewModel)
+            .environmentObject(session)
     }
 }
+

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var eventVM: EventViewModel
+    
 
     var body: some View {
         NavigationStack {

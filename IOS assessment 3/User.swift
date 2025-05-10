@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import CoreLocation
+import MapKit
 
 struct User: Identifiable {
     var id = UUID()
@@ -13,6 +15,10 @@ struct User: Identifiable {
     var email: String
     var password: String
     var avatarImage: String
+    var isMerchant: Bool = false
+    var preferredLocation: CLLocationCoordinate2D
     var createdEvents: [Event]
     var favoriteEvents: [Event]
+    var notifications: [NotificationItem] = []
 }
+

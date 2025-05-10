@@ -77,5 +77,14 @@ class EventViewModel: ObservableObject {
             favoriteEvents.append(event)
         }
     }
+    
+    func incrementInterest(for event: Event) {
+        if let index = allEvents.firstIndex(where: { $0.id == event.id }) {
+            if allEvents[index].interestedCount < allEvents[index].maxPeople {
+                allEvents[index].interestedCount += 1
+            }
+        }
+    }
+
 
 }
