@@ -14,6 +14,8 @@ class EventViewModel: ObservableObject {
     @Published var allEvents: [Event] = []
     @Published var selectedCategory: String? = nil
     @Published var favoriteEvents: [Event] = []
+    @Published var lastAddedEvent: Event? = nil
+
 
     init() {
         loadSampleEvents()
@@ -60,6 +62,8 @@ class EventViewModel: ObservableObject {
         )
 
         allEvents.append(newEvent)
+        self.lastAddedEvent = newEvent
+
     }
     
     func isFavorite(_ event: Event) -> Bool {

@@ -10,6 +10,7 @@ import CoreLocation
 
 struct ReleaseEventView: View {
     @EnvironmentObject var eventVM: EventViewModel
+    @State private var selectedCoordinate = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
 
     @State private var title = ""
     @State private var address = ""
@@ -69,6 +70,15 @@ struct ReleaseEventView: View {
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(AppStyle.cardCornerRadius)
                 }
+                Section(header: Text("Location").font(.caption).foregroundColor(AppStyle.secondaryText)) {
+                    MapSelectorView(selectedCoordinate: $selectedCoordinate)
+                        .frame(height: 250)
+
+                    Text("Lat: \(selectedCoordinate.latitude), Lon: \(selectedCoordinate.longitude)")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+
 
                 Button("Post") {
                     eventVM.addEvent(
@@ -79,7 +89,8 @@ struct ReleaseEventView: View {
                         imageName: imageName,
                         category: category,
                         maxPeople: Int(maxPeople) ?? 10,
-                        location: CLLocationCoordinate2D(latitude: -33.0, longitude: 151.0)
+                        location: selectedCoordinate
+
                     )
                 }
                 .frame(maxWidth: .infinity)
