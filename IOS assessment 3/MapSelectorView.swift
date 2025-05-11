@@ -21,18 +21,18 @@ struct MapSelectorView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        // 移除旧的标注
-        uiView.removeAnnotations(uiView.annotations)
-        
-        // 添加新的标注
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = selectedCoordinate
-        uiView.addAnnotation(annotation)
+            // remove old anno
+            uiView.removeAnnotations(uiView.annotations)
+            
+            // add new annotation
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = selectedCoordinate
+            uiView.addAnnotation(annotation)
 
-        // 更新地图区域
-        let region = MKCoordinateRegion(center: selectedCoordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-        uiView.setRegion(region, animated: true)
-    }
+            // update the map area
+            let region = MKCoordinateRegion(center: selectedCoordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            uiView.setRegion(region, animated: true)
+        }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
