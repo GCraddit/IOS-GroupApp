@@ -23,7 +23,7 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                // 用户头部
+                // User header
                 HStack(spacing: 16) {
                     Image(userSession.currentUser?.avatarImage ?? "defaultAvatar")
                         .resizable()
@@ -62,7 +62,7 @@ struct DashboardView: View {
                 .padding(.horizontal, AppStyle.cardPadding)
                 .padding(.top)
 
-                // 卡片列表
+                // Card List
                 ScrollView {
                     VStack(spacing: 16) {
                         ForEach(filteredEvents, id: \.id) { event in
@@ -74,12 +74,12 @@ struct DashboardView: View {
 
                 Spacer()
 
-                // 退出按钮
+                // Exit Button
                 Button("Sign Out") {
                     print("Signing out...")
                     userSession.currentUser = nil
                     isLoggedIn = false
-                    selectedTab = 0 // ✅ 强制跳回首页
+                    selectedTab = 0 // ✅Force return to home page
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -103,7 +103,7 @@ struct DashboardView: View {
         }
         .sheet(isPresented: $showLoginSheet, onDismiss: {
             if userSession.currentUser == nil {
-                selectedTab = 0 // ✅ 自动跳回首页 tab
+                selectedTab = 0 // ✅ Automatically jump back to the home page tab
             }
         }) {
             SignInView()
@@ -113,7 +113,7 @@ struct DashboardView: View {
     }
     
 
-    // 数据过滤逻辑
+    // Data filtering logic
     var filteredEvents: [Event] {
         switch tabFilter {
         case "Favorites":
