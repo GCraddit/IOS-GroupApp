@@ -19,7 +19,7 @@ struct EventDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                // 封面图
+                // the front page
                 Image(event.imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -27,7 +27,7 @@ struct EventDetailView: View {
                     .cornerRadius(AppStyle.cardCornerRadius)
                     .clipped()
 
-                // 收藏按钮
+                // faverite button
                 HStack {
                     Spacer()
                     Button {
@@ -57,7 +57,7 @@ struct EventDetailView: View {
                 }
                 .padding(.trailing)
 
-                // 信息项
+                // info
                 VStack(spacing: 12) {
                     infoRow(label: "EVENT NAME", value: event.title)
                     infoRow(label: "Organizer", value: event.organizer, color: .blue)
@@ -74,7 +74,7 @@ struct EventDetailView: View {
                 }
                 .padding(.horizontal)
 
-                // 按钮
+                // button details
                 Button {
                     if userSession.currentUser == nil {
                         showLoginSheet = true
@@ -101,7 +101,7 @@ struct EventDetailView: View {
         }
     }
 
-    // MARK: - 复用小组件
+    // mark for some small component
     func infoRow(label: String, value: String, color: Color = .primary) -> some View {
         HStack {
             Text(label)
