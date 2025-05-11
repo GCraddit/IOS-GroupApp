@@ -12,7 +12,7 @@ struct EventCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // 活动图片
+            // Event pictures
             Image(event.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -20,11 +20,10 @@ struct EventCardView: View {
                 .cornerRadius(AppStyle.cardCornerRadius)
                 .clipped()
 
-            // 标题
-            Text(event.title)
+            // title            Text(event.title)
                 .font(.headline)
 
-            // 时间 & 地点
+            // Time & Location
             HStack {
                 Label(event.date.formatted(date: .abbreviated, time: .shortened), systemImage: "calendar")
                 Spacer()
@@ -33,7 +32,7 @@ struct EventCardView: View {
             .font(.subheadline)
             .foregroundColor(AppStyle.secondaryText)
 
-            // 标签 & 人数
+            // Tags & Number of people
             HStack {
                 Text(event.category)
                     .font(.caption)

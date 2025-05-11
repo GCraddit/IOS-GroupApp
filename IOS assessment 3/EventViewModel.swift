@@ -36,10 +36,10 @@ class EventViewModel: ObservableObject {
         )
 
         allEvents = [sample]
-        favoriteEvents = [sample] // ✅ 设为已收藏
+        favoriteEvents = [sample] // Add to favorites
     }
 
-    // ✅ 添加活动
+    //  Add an event
     func addEvent(title: String,
                   organizer: String,
                   address: String,
