@@ -73,7 +73,7 @@ struct ReleaseEventView: View {
                     }
                     .pickerStyle(.menu)
 
-                    // ✅ 用户选择后显示当前图片
+                    //Display the current image after the user selects
                     if !imageName.isEmpty {
                         Image(imageName)
                             .resizable()
@@ -131,7 +131,7 @@ struct ReleaseEventView: View {
                     eventVM.allEvents.append(newEvent)
                     eventVM.lastAddedEvent = newEvent
 
-                    // ✅ 商户发布后，推送给附近用户
+                    //  After the merchant publishes, push it to nearby users
                     if userSession.currentUser?.isMerchant == true {
                         userSession.sendNotificationToNearbyUsers(for: newEvent)
                     }
@@ -162,7 +162,7 @@ struct ReleaseEventView: View {
         }
         .sheet(isPresented: $showLoginSheet, onDismiss: {
             if userSession.currentUser == nil {
-                selectedTab = 0 // ✅ 自动跳回首页 tab
+                selectedTab = 0 //  Automatically jump back to the home page tab
             }
         }) {
             SignInView()

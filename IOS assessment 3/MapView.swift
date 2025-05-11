@@ -15,7 +15,7 @@ struct MapView: View {
     @State private var showDetail: Bool = false
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093),
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05) // 更聚焦
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05) // More Focus
     )
     @State private var selectedRegion: String = "All"
     let regionOptions = ["All", "UTS", "CBD", "North"]
@@ -27,7 +27,7 @@ struct MapView: View {
         NavigationStack {
             NavigationStack {
                 VStack(spacing: 0) {
-                    // 搜索栏
+                    // Search bar
                     TextField("Search", text: $searchText)
                         .padding(10)
                         .background(Color(.systemGray6))
@@ -44,11 +44,11 @@ struct MapView: View {
 
                     
                     ZStack(alignment: .bottom) {
-                        // 🗺️ 地图
+                        // map
                         Map(coordinateRegion: $region, annotationItems: filteredEvents()) { event in
                             MapAnnotation(coordinate: event.location) {
                                 VStack(spacing: 4) {
-                                    // 🏷️ 活动标题方框
+                                    //  Event title box
                                     Text(event.title)
                                         .font(.caption)
                                         .padding(.horizontal, 8)
@@ -59,7 +59,7 @@ struct MapView: View {
                                         .lineLimit(1)
                                         .truncationMode(.tail)
                                     Button {
-                                        // 点击后调整地图中心 & 弹出卡片
+                                        // Adjust map center & popup card after clicking
                                         let offsetLat = event.location.latitude - 0.005
                                         region.center = CLLocationCoordinate2D(latitude: offsetLat, longitude: event.location.longitude)
                                         region.span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
@@ -79,9 +79,9 @@ struct MapView: View {
                         }
                         Spacer()
                         
-                        // 🖱️ 点击关闭区域（仅当卡片显示时出现）
+                        // Click to close the area (only appears when the card is displayed)
                         if selectedEvent != nil {
-                            Color.black.opacity(0.001) // 看不见但能点
+                            Color.black.opacity(0.001)
                                 .edgesIgnoringSafeArea(.all)
                                 .onTapGesture {
                                     withAnimation {
@@ -91,7 +91,7 @@ struct MapView: View {
                                 }
                         }
                         
-                        // \ud83d\udcc3 卡片展示
+                        // Card display
                         if let event = selectedEvent, showDetail {
                             NavigationLink(destination: EventDetailView(event: event)) {
                                 EventCardView(event: event)
@@ -113,7 +113,7 @@ struct MapView: View {
                     if let last = eventVM.lastAddedEvent {
                         region.center = last.location
                         region.span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-                        eventVM.lastAddedEvent = nil // ✅ 只居中一次
+                        eventVM.lastAddedEvent = nil // ✅
                     }
                 }
 
@@ -121,7 +121,7 @@ struct MapView: View {
 
 
     func filteredEvents() -> [Event] {
-        // 第一步：搜索文本过滤
+        // Step 1: Search text filtering
         let searchFiltered = eventVM.allEvents.filter {
             searchText.isEmpty || (
                 $0.title.localizedCaseInsensitiveContains(searchText) ||
@@ -131,7 +131,7 @@ struct MapView: View {
             )
         }
 
-        // 第二步：区域筛选
+        // Step 2: Regional screening
         return searchFiltered.filter { event in
             switch selectedRegion {
             case "UTS":

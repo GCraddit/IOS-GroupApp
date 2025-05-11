@@ -52,7 +52,7 @@ struct FavoritesView: View {
         }
         .sheet(isPresented: $showLoginSheet, onDismiss: {
             if userSession.currentUser == nil {
-                selectedTab = 0 // ✅ 自动跳回首页 tab
+                selectedTab = 0 //  Automatically jump back to the home page tab
             }
         }) {
             SignInView()

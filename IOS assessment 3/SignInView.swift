@@ -33,14 +33,14 @@ struct SignInView: View {
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(AppStyle.cardCornerRadius)
 
-                // 密码输入
+                // Password Input
                 SecureField("Password", text: $password)
                     .textContentType(.password)
                     .padding()
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(AppStyle.cardCornerRadius)
 
-                // 登录按钮
+                // Login Button
                 Button("Sign In") {
                     if email.isEmpty || password.isEmpty {
                         showError = true

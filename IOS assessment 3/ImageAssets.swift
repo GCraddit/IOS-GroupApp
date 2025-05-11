@@ -7,7 +7,7 @@
 import Foundation
 
 struct ImageAssets {
-    // 活动封面图（用于 ReleaseEventView）
+    // Activity cover image (for ReleaseEventView)
     static let eventImages: [String] = [
         "bbq",
         "mahjong",
@@ -17,7 +17,7 @@ struct ImageAssets {
         "sushi"
     ]
 
-    // 用户头像（用于 allUsers / Dashboard）
+    // User avatar (for allUsers / Dashboard)
     static let avatars: [String] = [
         "person1",
         "person2",

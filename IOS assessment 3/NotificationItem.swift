@@ -16,7 +16,7 @@ struct NotificationItem: Identifiable {
     let message: String
     let date: Date
 
-    // ✅ 可选关联的 Event（用于跳转详情页）
+    // Optional associated Event (used to jump to the detail page)
     let relatedEvent: Event?
 }
 

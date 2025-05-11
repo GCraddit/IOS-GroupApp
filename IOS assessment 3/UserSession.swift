@@ -12,9 +12,8 @@ import MapKit
 class UserSession: ObservableObject {
     @Published var currentUser: User?
 
-    // 可选：你也可以存一个模拟用户数据库
     var allUsers: [User] = [
-        // ✅ 商户用户
+        // Merchant users
         User(
             name: "Helena",
             email: "helena@example.com",
@@ -27,7 +26,7 @@ class UserSession: ObservableObject {
             notifications: []
         ),
 
-        // ✅ 普通用户 A（在 UTS 附近）
+        // Ordinary user A (near UTS)
         User(
             name: "Leo",
             email: "leo@example.com",
@@ -40,7 +39,7 @@ class UserSession: ObservableObject {
             notifications: []
         ),
 
-        // ✅ 普通用户 B（远离 CBD，不会收到通知）
+        //  Ordinary user B (stay away from CBD and will not receive notifications)
         User(
             name: "Ava",
             email: "ava@example.com",
@@ -75,12 +74,12 @@ class UserSession: ObservableObject {
         for i in 0..<allUsers.count {
             var user = allUsers[i]
 
-            // 排除自己、排除其他商户
+            // Exclude yourself and other merchants
             if user.id != current.id, !user.isMerchant {
                 let distanceKm = distance(from: event.location, to: user.preferredLocation)
                 if distanceKm <= radiusKm {
                     let notification = NotificationItem(
-                        type: .comment, // 或你自定义的 .event
+                        type: .comment,
                         sender: current.name,
                         message: "posted nearby event: \(event.title)",
                         date: Date(),
@@ -88,7 +87,7 @@ class UserSession: ObservableObject {
                     )
                     allUsers[i].notifications.append(notification)
 
-                    // 如果刚好是当前用户本人（测试用），也更新副本
+                    // If it happens to be the current user (for testing), also update the copy
                     if current.id == user.id {
                         currentUser = allUsers[i]
                     }
