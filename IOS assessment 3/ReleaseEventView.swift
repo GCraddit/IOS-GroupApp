@@ -49,10 +49,9 @@ struct ReleaseEventView: View {
                         .onSubmit {
                             geocodeAddress()
                         }
-                        .onChange(of: address) { _ in
-                            geocodeAddress()
-                        }
-
+//                        .onChange(of: address) { _ in
+//                            geocodeAddress()
+//                        }
                         .padding(8)
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(AppStyle.cardCornerRadius)
@@ -136,6 +135,18 @@ struct ReleaseEventView: View {
                     if userSession.currentUser?.isMerchant == true {
                         userSession.sendNotificationToNearbyUsers(for: newEvent)
                     }
+                    title = ""
+                    address = ""
+                    maxPeople = ""
+                    summary = ""
+                    category = categoryOptions.first ?? "Food"
+                    imageName = ImageAssets.eventImages.first ?? "bbq"
+                    selectedCoordinate = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
+                    region = MKCoordinateRegion(
+                        center: selectedCoordinate,
+                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                    )
+
                     selectedTab = 0
                 }
                 .frame(maxWidth: .infinity)
