@@ -151,17 +151,6 @@ One of the trickiest parts was converting user-inputted addresses into precise m
 - If the geocoding fails, we show a user-friendly `.alert()` explaining the issue.
 - We also allow manual pin-drop as a fallback.
 
-```swift
-geocoder.geocodeAddressString(address) { placemarks, error in
-    if let location = placemarks?.first?.location {
-        selectedCoordinate = location.coordinate
-    } else {
-        showGeocodeError = true
-        geocodeErrorMessage = "Could not locate the address. Try again or use the map."
-    }
-}
-
-
 ## Iterative Product Design
 
 We followed an **iterative product design cycle** to develop our minimum viable product (MVP). Here’s how our app evolved over time:
