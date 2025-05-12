@@ -24,7 +24,7 @@ struct SignInView: View {
                     .fontWeight(.bold)
                     .padding(.bottom, 8)
 
-                // 邮箱输入
+                // email
                 TextField("Email", text: $email)
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
