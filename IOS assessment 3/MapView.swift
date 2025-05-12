@@ -139,7 +139,7 @@ struct MapView: View {
             case "CBD":
                 return coordinateInBox(event.location, latMin: -33.875, latMax: -33.87, lonMin: 151.203, lonMax: 151.22)
             case "North":
-                return event.location.latitude < -33.85 // 示例
+                return event.location.latitude < -33.85 //sample
             default:
                 return true
             }
