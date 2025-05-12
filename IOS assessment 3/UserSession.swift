@@ -18,7 +18,7 @@ class UserSession: ObservableObject {
             name: "Helena",
             email: "helena@example.com",
             password: "123456",
-            avatarImage: ImageAssets.avatars[0], // 例如使用 profile1,
+            avatarImage: ImageAssets.avatars[0], // for example use profiles 1
             isMerchant: true,
             preferredLocation: CLLocationCoordinate2D(latitude: -33.884, longitude: 151.204),
             createdEvents: [],
