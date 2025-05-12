@@ -99,7 +99,7 @@ class UserSession: ObservableObject {
     func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
         let loc1 = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let loc2 = CLLocation(latitude: to.latitude, longitude: to.longitude)
-        return loc1.distance(from: loc2) / 1000 // 转换为公里
+        return loc1.distance(from: loc2) / 1000
     }
 
 }
