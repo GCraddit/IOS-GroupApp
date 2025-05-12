@@ -194,8 +194,8 @@ Each phase informed the next. Through small, testable iterations, we were able t
 
 | Name            | Student ID | Role                            | Key Contributions                                                                 |
 |-----------------|------------|----------------------------------|------------------------------------------------------------------------------------|
-| Qiwei Chen      | 24669588   | Lead Developer & System Design  | Designed core app structure, implemented login logic, state management, and UI flow |
-| Shuoyan Xia     | 24914119   | Feature Developer & Geolocation | Developed event posting form, map integration, geocoding logic, and form validation |
+| Qiwei Chen      | 24669588   | Feature Developer & Geolocation  | Developed event posting form, map integration, geocoding logic, and form validation |
+| Shuoyan Xia     | 24914119   | Lead Developer & System Design  | Designed core app structure, implemented login logic, state management, and UI flow  |
 | Wenquan Zhang   | 25224243   | UI/UX Designer & QA             | Built user-facing views like Home, Favourites, Dashboard, and handled UI testing and refinement |
 
 Each team member contributed equally to the planning, design, and debugging of the app.
