@@ -101,6 +101,7 @@ struct EditProfileView: View {
             .environmentObject(userSession)
     }
 }
-
+// in the edit page , users can change name and profile pic, email is read only
+// click on save change , back to user session and a confirm window pop out
 
 
