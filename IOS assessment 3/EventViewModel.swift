@@ -67,24 +67,24 @@ class EventViewModel: ObservableObject {
     }
     
     func isFavorite(_ event: Event) -> Bool {
-        return favoriteEvents.contains(where: { $0.id == event.id })
-    }
-
-    func toggleFavorite(_ event: Event) {
-        if isFavorite(event) {
-            favoriteEvents.removeAll { $0.id == event.id }
-        } else {
-            favoriteEvents.append(event)
+            return favoriteEvents.contains(where: { $0.id == event.id })
         }
-    }
-    
-    func incrementInterest(for event: Event) {
-        if let index = allEvents.firstIndex(where: { $0.id == event.id }) {
-            if allEvents[index].interestedCount < allEvents[index].maxPeople {
-                allEvents[index].interestedCount += 1
+
+        func toggleFavorite(_ event: Event) {
+            if isFavorite(event) {
+                favoriteEvents.removeAll { $0.id == event.id }
+            } else {
+                favoriteEvents.append(event)
             }
         }
+        // find the event in the list, when the number is not full , add one to interested count
+        func incrementInterest(for event: Event) {
+            if let index = allEvents.firstIndex(where: { $0.id == event.id }) {
+                if allEvents[index].interestedCount < allEvents[index].maxPeople {
+                    allEvents[index].interestedCount += 1
+                }
+            }
+        }
+
+
     }
-
-
-}
