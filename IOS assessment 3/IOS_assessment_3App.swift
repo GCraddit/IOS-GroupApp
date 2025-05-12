@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct IOS_assessment_3App: App {
     @StateObject var eventVM = EventViewModel()
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false// 默认没有登录
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @StateObject var userSession = UserSession()
     @State private var selectedTab = 0
 
